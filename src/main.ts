@@ -5,6 +5,7 @@ import { vantUiComponents } from './plugins/vantUI';
 // import { i18n } from './i18n';
 import router from './router';
 import { setupStore } from '@/store';
+import 'lib-flexible/flexible.js';
 
 const app = createApp(App);
 app.config.globalProperties.$title = 'salimsu';

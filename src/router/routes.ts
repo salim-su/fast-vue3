@@ -12,6 +12,16 @@ const routes: RouteRecordRaw[] = [
     }
   },
   {
+    name: 'Test',
+    path: '/test',
+    component: () => import('@/views/test/test.vue'),
+    meta: {
+      keepAlive: false,
+      requireAuth: true,
+      title: 'test'
+    }
+  },
+  {
     name: 'Dispatch',
     path: '/dispatch',
     component: () => import('@/views/dispatch/dispatch.vue'),

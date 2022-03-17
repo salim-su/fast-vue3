@@ -4,7 +4,7 @@
       <nut-icon size="20" name="search2" @click="clickAlter"></nut-icon>
     </template>
   </nut-searchbar>
-  <div class="box"></div>
+  <!--  <div class="box"></div>-->
 
   <div class="w flex justify-content-center">
     <div class="pc-bg cfff">
@@ -34,18 +34,18 @@
         @refresh="refresh"
       >
         <template v-for="(item, index) in data.refreshList" :key="index">
-          <div class="flex w align-items-center pl30 pr30 infiniteLi-top">
+          <div class="flex w align-items-center infiniteLi-top">
             <div class="infiniteLi flex w">
               <div class="fs20 fw" style="color: #ecdab6">{{ index + 1 }} 、</div>
               <div class="tl">
-                <div class="fs20 fw mb5">{{ item?.licenseNumber }}</div>
+                <div class="fs20 fw">{{ item?.licenseNumber }}</div>
                 <div class="fs14 c999" v-if="item.inWorking">
                   <span>已派：</span>
                   {{ item?.inWorking }}
                 </div>
               </div>
               <div class="flex1 flex justify-content-end">
-                <nut-checkbox label="复选框" v-model="item.dispatch" @change="changeBox(item, $event)">123</nut-checkbox>
+                <nut-checkbox :disabled="checkFlag && !item.dispatch" label="复选框" v-model="item.dispatch" @change="changeBox(item, $event)"></nut-checkbox>
               </div>
             </div>
           </div>
@@ -65,6 +65,7 @@ import { dispatchCar, listTruck, unDispatchCar } from "@/api";
 import { Toast } from "@nutui/nutui";
 
 const groupId = ref("");
+const checkFlag = ref(false);
 const salimsu = ref("");
 const dispatchCount = ref(0);
 const realCount = ref(0);
@@ -83,10 +84,18 @@ const data = reactive({
   refreshList: []
 });
 onMounted(() => {
+
   groupId.value = router.currentRoute.value.query.groupId;
   planId.value = router.currentRoute.value.query.planId;
   dispatchCount.value = router.currentRoute.value.query.dispatchCount;
   realCount.value = router.currentRoute.value.query.realCount;
+  if (parseInt(realCount.value) >= parseInt(dispatchCount.value)) {
+    checkFlag.value = true;
+  }
+  console.log(groupId.value);
+  console.log(planId.value);
+  console.log(dispatchCount.value);
+  console.log(realCount.value);
   qureyFrom.groupId = groupId.value;
   qureyFrom.planId = planId.value;
   initTab1();
@@ -103,11 +112,24 @@ const changeBox = (item, e) => {
   if (e) {
     dispatchCar(postData).then(res => {
       realCount.value++;
+      if (realCount.value >= dispatchCount.value) {
+        checkFlag.value = true;
+      }else{
+        checkFlag.value = false;
+      }
       Toast.success("派车成功");
+    }).catch(e=>{
+      item.dispatch = false;
+      console.log(e);
     });
   } else {
     unDispatchCar(postData).then(res => {
       realCount.value--;
+      if (realCount.value >= dispatchCount.value) {
+        checkFlag.value = true;
+      }else{
+        checkFlag.value = false;
+      }
       Toast.success("解绑成功");
     });
   }
@@ -185,7 +207,9 @@ const refreshLoadMore = async (done) => {
   //padding-right: 21px;
 }
 .infiniteLi-top {
-  height: 80px;
+  height: 70px;
+  padding-left: 15px;
+  padding-right: 15px;
 }
 .box {
   width: 375px;

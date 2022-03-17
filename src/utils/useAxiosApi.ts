@@ -85,6 +85,7 @@ instance.interceptors.response.use(
     }
 
     const errorResponse = error.response.data;
+    console.log(error.response.data.code);
     // Toast(errorResponse.msg);
     // console.log(errorResponse);
     if (errorResponse.code === 401) {
@@ -96,6 +97,14 @@ instance.interceptors.response.use(
       setTimeout((res) => {
         router.push({ name: 'Login' });
       }, 1000);
+    }
+    if (errorResponse.code === 500) {
+      //msg
+      Toast({
+        message: errorResponse.msg,
+        className: 'salimsu',
+        duration: 1000
+      });
     }
     // Toast(error.message);
     // return Promise.reject(error.message);
