@@ -16,7 +16,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 import router from '@/router';
-import { apPage } from '@/api';
+
 const show = ref(false);
 const showPopup = () => {
   show.value = true;
@@ -25,7 +25,6 @@ const gohome = () => {
   localStorage.clear();
   router.push({ name: '/' });
 };
-apPage();
 // export default defineComponent({
 //   name: 'Button',
 //   setup() {

@@ -1,5 +1,5 @@
 <template>
-  <h1>layouts</h1>
+  <!--  <h1>layouts</h1>-->
   <div class="app-container">
     <div class="layout-content">
       <!--      <div class="topTips"  v-show="this.$isIOS.v"></div>-->
@@ -16,7 +16,7 @@
       <!---->
       <!--      <router-view></router-view>-->
     </div>
-    <div class="layout-footer">
+    <div class="layout-footer" v-if="false">
       <!--      <TabBar :data="tabbars" />-->
       <TabBar :data="tabbars"></TabBar>
     </div>
@@ -25,6 +25,7 @@
 
 <script setup>
 import TabBar from '../../components/TabBar.vue';
+import HelloWorld from "../../components/HelloWorld";
 
 const tabbars = [
   {

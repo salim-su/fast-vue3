@@ -19,6 +19,7 @@ console.log(getCurrentInstance());
 router.beforeEach(async (to, from, next) => {
   const token = window.localStorage.getItem('token');
   console.log(token);
+  // debugger;
   if (to.meta.title) {
     console.log(to);
     document.title = `${to.meta.title}`;

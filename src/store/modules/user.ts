@@ -1,9 +1,11 @@
-import { loginPassword, loginSystem, loginSystems } from '@/api';
+import { loginByPhone, loginPassword, loginSystem, loginSystems } from '@/api';
 import { useCookies } from '@vueuse/integrations/useCookies';
 import { defineStore } from 'pinia';
 import { watch } from 'vue';
+
 const token = window.localStorage.getItem('token');
 const { VITE_TOKEN_KEY } = import.meta.env;
+
 interface StoreUser {
   token: any;
   info: AnyObject;
@@ -60,6 +62,21 @@ export const useUserStore = defineStore({
           // this.setInfo(data.value);
           // console.log(reject);
           // console.log(data.value);
+        });
+      });
+    },
+    loginBySms(postData: any) {
+      console.log(postData);
+      return new Promise((resolve, rejects) => {
+        loginByPhone(postData).then((res) => {
+          if (res?.data) {
+            localStorage.clear();
+            localStorage.setItem('token', res.data);
+            this.setToken(res.data);
+            resolve(res);
+          } else {
+            resolve(null);
+          }
         });
       });
     }

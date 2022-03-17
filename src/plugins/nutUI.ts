@@ -1,4 +1,5 @@
 // nutui按需加载
+// import '@nutui/nutui/dist/styles/variables.scss';
 
 import {
   Button,
@@ -26,34 +27,43 @@ import {
   Popover,
   Pagination,
   Form,
-  FormItem
+  FormItem,
+  Tabs,
+  TabPane,
+  InfiniteLoading,
+  Checkbox,
+  Radio,RadioGroup
 } from '@nutui/nutui';
 
 export const nutUiComponents = [
   Button,
-  Cell,
-  Form,
-  FormItem,
+  // Cell,
+  // Form,
+  // FormItem,
   Icon,
-  Input,
+  // Input,
   Tabbar,
   Toast,
-  ShortPassword,
-  Price,
-  Layout,
-  Rate,
-  Popup,
-  Calendar,
-  Video,
-  NoticeBar,
-  NumberKeyboard,
-  CountDown,
-  Tag,
-  Badge,
+  Checkbox,
+  // ShortPassword,
+  // Price,
+  // Layout,
+  // Rate,
+  // Popup,
+  // Calendar,
+  // Video,
+  // NoticeBar,
+  // NumberKeyboard,
+  // CountDown,
+  // Tag,
+  // Badge,
   SearchBar,
-  Avatar,
-  Menu,
-  MenuItem,
-  Popover,
-  Pagination
+  // Avatar,
+  // Menu,
+  // MenuItem,
+  // Popover,
+  // Pagination,
+  Tabs,
+  TabPane,
+  InfiniteLoading
 ];

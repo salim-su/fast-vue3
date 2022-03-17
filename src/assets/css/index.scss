@@ -1,6 +1,5 @@
 @import './variables.scss';
 @import './mixin.scss';
-
 html,
 body .app {
   color: #333333;
@@ -967,4 +966,24 @@ div{
 }
 .tab-style .van-tabs__wrap{
   border-radius: 5px;
+}
+.nut-tabs__titles{
+  //width: 100%;
+  //position: fixed;
+  //left: 0;
+  //top: 0;
+  //z-index: 9999;
+}
+.test{
+  .nut-tabpane{
+    padding: 0;
+  }
+}
+.bottom-box{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.nut-searchbar__search-input{
+  background-color: #F5F5F5;
 }

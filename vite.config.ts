@@ -25,7 +25,25 @@ export default function ({ command }: ConfigEnv): UserConfigExport {
       host: '0.0.0.0',
       port: 3000,
       open: true,
+      // proxy: {
+      //   '/api': {
+      //     target: 'http://localhost:8866/',
+      //     // target: 'http://localhost:8080/',
+      //     changeOrigin: true,
+      //     rewrite: (path) => path.replace(/^\/api/, '')
+      //   }
+      // }
       proxy: {
+        '/api/weighing-room-biz': {
+          target: 'http://192.168.1.110:8201',
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/api\/weighing-room-biz/, '')
+        },
+        '/api/common-serve': {
+          target: 'http://10.10.21.252/api',
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/api/, '')
+        },
         '/api': {
           target: 'http://localhost:8866/',
           // target: 'http://localhost:8080/',
@@ -57,8 +75,7 @@ export default function ({ command }: ConfigEnv): UserConfigExport {
       preprocessorOptions: {
         scss: {
           // 配置 nutui 全局 scss 变量
-          additionalData: `@import "@nutui/nutui/dist/styles/variables.scss";`
-          // additionalData: '@import "@/assets/css/index.scss";'
+          additionalData: `@import "@nutui/nutui/dist/styles/variables.scss";@import "./src/assets/css/index.scss";`
         }
       }
     },

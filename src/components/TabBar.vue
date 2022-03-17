@@ -24,8 +24,8 @@ const props = defineProps({
 const active = computed(() => {
   return props.defaultActive;
 });
-
-const inactivess = ref(new URL(`../../src/assets/img/index.svg`, import.meta.url).href);
+//引入图标
+// const inactivess = ref(new URL(`../../src/assets/img/index.svg`, import.meta.url).href);
 </script>
 
 <template>
@@ -35,7 +35,7 @@ const inactivess = ref(new URL(`../../src/assets/img/index.svg`, import.meta.url
     <!--    <h1>{{ active }}</h1>-->
     <!--    <input type="text" v-model="active" />-->
 
-    <van-icon :name="inactivess"></van-icon>
+    <!--    <van-icon :name="inactivess"></van-icon>-->
 
     <van-tabbar :border="false" class="tabbar" fixed route v-model="active">
       <van-tabbar-item :key="index" :replace="true" :to="item.to" v-for="(item, index) in data">

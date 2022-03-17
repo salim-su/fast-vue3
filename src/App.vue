@@ -13,3 +13,10 @@
   </Suspense>
 </template>
 <script setup></script>
+<style scoped>
+.nut-tabs__titles {
+  position: fixed;
+  left: 0;
+  top: 0;
+}
+</style>
