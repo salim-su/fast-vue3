@@ -1,5 +1,7 @@
 @import './variables.scss';
 @import './mixin.scss';
+
+
 html,
 body .app {
   color: #333333;
@@ -958,6 +960,7 @@ body .app {
 div{
   box-sizing: border-box;
 }
+/*项目*/
 .bgt{
   .van-field__control{
     color: #ffffff;
@@ -993,4 +996,17 @@ div{
 }
 .nut-infiniteloading .nut-infinite-bottom{
   padding-bottom: 20px !important;
+}
+
+.active{
+  .nut-tabs__titles-item__text.ellipsis {
+    color: $primary-color;
+    font-size: 16px;
+    font-weight: normal;
+  }
+}
+.nut-tabs__titles-item.active .nut-tabs__titles-item__line {
+  width: 20px;
+  transform: skew(30deg);
+  margin-left: -10px;
 }

@@ -7,7 +7,6 @@ import eslintPlugin from 'vite-plugin-eslint';
 import styleImport, { NutuiResolve, VantResolve } from 'vite-plugin-style-import';
 import { viteMockServe } from 'vite-plugin-mock';
 import eruda from 'vite-plugin-eruda';
-
 function resolve(dir: string) {
   return path.join(__dirname, dir);
 }
@@ -35,7 +34,7 @@ export default function ({ command }: ConfigEnv): UserConfigExport {
       // }
       proxy: {
         '/api/weighing-room-biz': {
-          target: 'http://192.168.1.110:8201',
+          target: 'http://192.168.1.103:8201',
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/api\/weighing-room-biz/, '')
         },
@@ -75,7 +74,9 @@ export default function ({ command }: ConfigEnv): UserConfigExport {
       preprocessorOptions: {
         scss: {
           // 配置 nutui 全局 scss 变量
-          additionalData: `@import "@nutui/nutui/dist/styles/variables.scss";@import "./src/assets/css/index.scss";`
+          // additionalData: `@import "@nutui/nutui/dist/styles/variables.scss";@import "./src/assets/css/index.scss";`
+          additionalData: `@import "@nutui/nutui/dist/styles/variables.scss";@import "./src/assets/css/variables.scss";@import "./src/assets/css/index.scss";`
+          // additionalData: `@import "@nutui/nutui/dist/styles/variables.scss";@import "./src/assets/css/custom_theme.scss";@import "./src/assets/css/index.scss";`
         }
       }
     },

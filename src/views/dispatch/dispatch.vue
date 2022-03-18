@@ -1,10 +1,9 @@
 <template>
-  <nut-searchbar v-model="state.searchValue">
+  <nut-searchbar v-model="state.searchValue" @clear="clearEvent">
     <template v-slot:rightout>
-      <nut-icon size="20" name="search2" @click="clickAlter"></nut-icon>
+      <nut-icon size="20" name="search2" @click="clickSearch"></nut-icon>
     </template>
   </nut-searchbar>
-  <!--  <div class="box"></div>-->
 
   <div class="w flex justify-content-center">
     <div class="pc-bg cfff">
@@ -34,18 +33,41 @@
         @refresh="refresh"
       >
         <template v-for="(item, index) in data.refreshList" :key="index">
-          <div class="flex w align-items-center infiniteLi-top">
+          <div class="flex w align-items-center infiniteLi-top posr">
+            <div
+              style="border-bottom-right-radius: 5px; border-top-right-radius: 5px; width: 5px; height: 50%; background: #d24443; position: absolute; left: 0"
+              v-if="item?.isLocked"
+            ></div>
+            <div
+              style="border-bottom-right-radius: 5px; border-top-right-radius: 5px; width: 5px; height: 50%; background: #789cf2; position: absolute; left: 0"
+              v-if="item?.inWorking"
+            ></div>
+
             <div class="infiniteLi flex w">
-              <div class="fs20 fw" style="color: #ecdab6">{{ index + 1 }} 、</div>
+              <div class="fs20 fw" style="color: #ecdab6">
+                <span>{{ index < 9 ? '0' + (index + 1) : index + 1 }} </span>
+
+                、</div
+              >
               <div class="tl">
-                <div class="fs20 fw">{{ item?.licenseNumber }}</div>
+                <div class="fs20 fw" :class="{ 'is-lock': item?.isLocked }">{{ item?.licenseNumber }}</div>
                 <div class="fs14 c999" v-if="item.inWorking">
                   <span>已派：</span>
                   {{ item?.inWorking }}
                 </div>
+                <div v-if="item?.isLocked" style="color: #d24443">
+                  <div class="fs14 pt5">
+                    <span>锁定：</span>
+                    <span>{{ item?.lockedTime }}</span>
+                    <span> 日解锁</span>
+                  </div>
+                </div>
               </div>
               <div class="flex1 flex justify-content-end">
-                <nut-checkbox :disabled="checkFlag && !item.dispatch" label="复选框" v-model="item.dispatch" @change="changeBox(item, $event)"></nut-checkbox>
+                <template v-if="!item?.isLocked">
+                  <nut-checkbox :disabled="checkFlag && !item.dispatch" label="复选框" v-model="item.dispatch" @change="changeBox(item, $event)"></nut-checkbox>
+                </template>
+                <!--                <template v-if="!item?.isLocked"></template>-->
               </div>
             </div>
           </div>
@@ -54,37 +76,32 @@
     </ul>
   </div>
 </template>
-<!--shipName: "阿托恩"-->
-<!--truckId: "1469963427388182529"-->
 <script type="ts" setup>
 import { onMounted, reactive, ref } from "vue";
-
-
 import router from "@/router";
 import { dispatchCar, listTruck, unDispatchCar } from "@/api";
 import { Toast } from "@nutui/nutui";
 
 const groupId = ref("");
 const checkFlag = ref(false);
-const salimsu = ref("");
 const dispatchCount = ref(0);
 const realCount = ref(0);
 const planId = ref("");
 const refreshHasMore = ref(true);
 const state = reactive({
-  tab1value: "0"
+  searchValue: ""
 });
 const qureyFrom = reactive({
   current: 1,
   size: 10,
   groupId: "",
-  planId: ""
+  planId: "",
+  keyword: ""
 });
 const data = reactive({
   refreshList: []
 });
 onMounted(() => {
-
   groupId.value = router.currentRoute.value.query.groupId;
   planId.value = router.currentRoute.value.query.planId;
   dispatchCount.value = router.currentRoute.value.query.dispatchCount;
@@ -92,54 +109,55 @@ onMounted(() => {
   if (parseInt(realCount.value) >= parseInt(dispatchCount.value)) {
     checkFlag.value = true;
   }
-  console.log(groupId.value);
-  console.log(planId.value);
-  console.log(dispatchCount.value);
-  console.log(realCount.value);
   qureyFrom.groupId = groupId.value;
   qureyFrom.planId = planId.value;
   initTab1();
-  console.log(salimsu);
 });
+
+const resetQureyForm = () => {
+  qureyFrom.current = 1;
+  qureyFrom.size = 10;
+  qureyFrom.keyword = "";
+};
+
 const changeBox = (item, e) => {
-  console.log(item);
-  console.log(e);
   const postData = {
     truckId: item.truckId,
     planId: planId.value
   };
-  console.log(postData);
   if (e) {
     dispatchCar(postData).then(res => {
       realCount.value++;
       if (realCount.value >= dispatchCount.value) {
         checkFlag.value = true;
-      }else{
+      } else {
         checkFlag.value = false;
       }
       Toast.success("派车成功");
-    }).catch(e=>{
+    }).catch(e => {
       item.dispatch = false;
-      console.log(e);
     });
   } else {
     unDispatchCar(postData).then(res => {
       realCount.value--;
       if (realCount.value >= dispatchCount.value) {
         checkFlag.value = true;
-      }else{
+      } else {
         checkFlag.value = false;
       }
       Toast.success("解绑成功");
     });
   }
 };
-const clickAlter = () => {
-  Toast.success("我是搜索");
+const clickSearch = () => {
+  qureyFrom.keyword = state.searchValue;
+  refresh();
+};
+const clearEvent = () => {
+  resetQureyForm();
+  refresh();
 };
 const initTab1 = async () => {
-  // alert('salimsu')
-  // await apPage(qureyFrom).then(res => {
   await listTruck(qureyFrom).then(res => {
     console.log(res.success);
     if (res.success) {
@@ -206,14 +224,19 @@ const refreshLoadMore = async (done) => {
   //padding-left: 21px;
   //padding-right: 21px;
 }
+
 .infiniteLi-top {
   height: 70px;
   padding-left: 15px;
   padding-right: 15px;
 }
+
 .box {
   width: 375px;
   height: 50px;
   background: #41b6a6;
+}
+.is-lock {
+  color: #acacac !important;
 }
 </style>

@@ -6,7 +6,7 @@ const routes: RouteRecordRaw[] = [
     path: '/index',
     component: () => import('@/views/index/index.vue'),
     meta: {
-      keepAlive: false,
+      keepAlive: true,
       requireAuth: true,
       title: 'index'
     }
@@ -16,7 +16,7 @@ const routes: RouteRecordRaw[] = [
     path: '/test',
     component: () => import('@/views/test/test.vue'),
     meta: {
-      keepAlive: false,
+      keepAlive: true,
       requireAuth: true,
       title: 'test'
     }
@@ -26,7 +26,7 @@ const routes: RouteRecordRaw[] = [
     path: '/dispatch',
     component: () => import('@/views/dispatch/dispatch.vue'),
     meta: {
-      keepAlive: false,
+      keepAlive: true,
       requireAuth: true,
       title: 'dispatch'
     }
@@ -36,7 +36,7 @@ const routes: RouteRecordRaw[] = [
     path: '/login',
     component: () => import('@/views/login/login.vue'),
     meta: {
-      keepAlive: false,
+      keepAlive: true,
       requireAuth: true,
       title: 'login'
     }

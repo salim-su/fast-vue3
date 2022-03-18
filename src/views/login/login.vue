@@ -41,7 +41,7 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue';
+import { ref } from 'vue';
 import { Toast } from 'vant/lib';
 import router from '@/router';
 import { useUserStore } from '@/store/modules/user';
@@ -56,12 +56,10 @@ const isErrorPhone = ref(false);
 const isErrorCode = ref(false);
 const loginType = ref('group');
 
-// onMounted(() => {});
 const userStore = useUserStore();
 
 const onSendSMS = () => {
   if (phoneNumber.value.match(telPattern.value)) {
-    // isSend.value = true;
     sendSMS({
       phoneNumber: phoneNumber.value
     }).then((res: any) => {

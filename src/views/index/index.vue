@@ -1,21 +1,7 @@
 <template>
   <div class="test">
-    <!--    <ul class="infiniteUl" id="refreshScroll">
-      <nut-infiniteloading
-        pull-icon="JD"
-        container-id="refreshScroll"
-        :use-window="false"
-        :is-open-refresh="true"
-        :has-more="refreshHasMore"
-        @load-more="refreshLoadMore"
-        @refresh="refresh"
-      >
-        <li class="infiniteLi" v-for="(item, index) in data.refreshList" :key="index">{{ item.id }}</li>
-      </nut-infiniteloading>
-    </ul>-->
     <nut-tabs v-model="state.tab1value" @change="tabsChange($event)">
       <nut-tabpane title="进行中">
-        <!--        <nut-searchbar v-model="state1.searchValue"></nut-searchbar>-->
         <nut-searchbar v-model="stateTab1.searchValue" @clear="clearEvent">
           <template v-slot:rightout>
             <nut-icon size="20" name="search2" @click="clickAlter"></nut-icon>
@@ -106,7 +92,7 @@
       </nut-tabpane>
 
       <nut-tabpane title="作业完结">
-        <nut-searchbar v-model="stateTab1.searchValue">
+        <nut-searchbar v-model="stateTab1.searchValue" @clear="clearEvent">
           <template v-slot:rightout>
             <nut-icon size="20" name="search2" @click="clickAlter"></nut-icon>
           </template>
@@ -204,7 +190,7 @@
         </div>
       </nut-tabpane>
       <nut-tabpane title="已归档">
-        <nut-searchbar v-model="stateTab1.searchValue">
+        <nut-searchbar v-model="stateTab1.searchValue" @clear="clearEvent">
           <template v-slot:rightout>
             <nut-icon size="20" name="search2" @click="clickAlter"></nut-icon>
           </template>
@@ -306,8 +292,6 @@ import { onMounted, reactive, ref } from "vue";
 import { Toast } from "@nutui/nutui";
 import { listPlanForGroup, workDone } from "@/api";
 import router from "@/router";
-import Router from "@/router";
-
 /*生命周期*/
 onMounted(() => {
   initTab1();
@@ -323,8 +307,6 @@ const clearEvent = () => {
 * 2、path: '/dispatch',query: { queryId:  '3' } 正常路由
 * */
 const dispatch = (item) => {
-  // console.log(item?.groupId);
-  // router.push({ name: 'Dispatch', params: { userId: 123 }})
   console.log(item);
   router.push({
     path: "/dispatch",
@@ -362,7 +344,6 @@ const resetQureyForm = () => {
   qureyFrom.current = 1;
   qureyFrom.size = 10;
   qureyFrom.keyword=''
-
 };
 const clickAlter = () => {
   console.log(stateTab1.searchValue);
@@ -370,21 +351,12 @@ const clickAlter = () => {
   qureyFrom.current = 1;
   data.refreshList = [];
   refresh();
-  // Toast.success("我是搜索");
 };
 const refreshLoadMore = async (done) => {
-
   await initTab1();
   done();
-
-  // setTimeout(async () => {
-  //   await initTab1();
-  //   done();
-  // }, 500);
 };
 const initTab1 = async () => {
-  // alert('salimsu')
-  // await apPage(qureyFrom).then(res => {
   await listPlanForGroup(qureyFrom).then(res => {
     console.log(res.success);
     if (res.success) {
@@ -398,11 +370,6 @@ const initTab1 = async () => {
   });
 };
 const refresh = async (done) => {
-  // setTimeout(async () => {
-  //   // Toast.success("刷新成功");
-  //
-  // }, 500);
-
   data.refreshList = [];
   qureyFrom.current = 1;
   refreshHasMore.value = true;
@@ -411,11 +378,7 @@ const refresh = async (done) => {
 
 };
 /*属性*/
-
 const stateTab1 = reactive({
-  searchValue: ""
-});
-const stateTab2 = reactive({
   searchValue: ""
 });
 const state = reactive({
@@ -431,9 +394,6 @@ const refreshHasMore = ref(true);
 const data = reactive({
   refreshList: []
 });
-const showPanelTan1 = ref(true);
-const showPanelTan2 = ref(false);
-const showPanelTan3 = ref(false);
 </script>
 <style scoped lang="less">
 .style {
@@ -483,7 +443,7 @@ const showPanelTan3 = ref(false);
 
     .status-in {
       width: 90px;
-      height: 30px;
+      height: 25px;
       //line-height: 25px;
       background: #83c946;
       position: absolute;
@@ -502,7 +462,7 @@ const showPanelTan3 = ref(false);
     }
     .status-out {
       width: 90px;
-      height: 30px;
+      height: 25px;
       //line-height: 25px;
       background: #e78638;
       position: absolute;
